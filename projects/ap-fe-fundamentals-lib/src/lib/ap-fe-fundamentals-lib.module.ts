@@ -10,11 +10,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     ImagesEditorComponent
   ],
   imports: [
+    HttpClientModule,
+    FormsModule,
     CommonModule,
     ImageCropperModule,
     MatTabsModule,
@@ -24,7 +30,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    AngularEditorModule
   ],
   exports: [
     ImagesEditorComponent
