@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { DominioDto } from '../dto/dominioDto';
 import { AbstractService } from './abstractService';
 import { DelegateService } from './delegate.service';
 import { IServiceCrud } from './IServiceCrud';
 import { UtenteService } from './utente.service';
 import { Inject } from '@angular/core';
+import { DominioDto } from '../public-api';
 
 @Injectable({
   providedIn: 'root'

@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { ResponseServizio } from '../dto/response/responseServizio';
 import { ServizioDto } from '../dto/servizioDto';
 import { DelegateService } from './delegate.service';
 import { RequestServizio } from '../dto/request/requestServizio';
 import { IServiceCrud } from './IServiceCrud';
 import { AbstractService } from './abstractService';
 import { Inject } from '@angular/core';
+import { ResponseServizio } from '../public-api';
 
 @Injectable({
   providedIn: 'root',

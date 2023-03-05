@@ -13,7 +13,6 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ApFeFundamentalsLibModule } from 'ap-fe-fundamentals-lib';
-import { TextEditorComponent } from './text-editor/text-editor.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -22,8 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    TextEditorComponent
+    AppComponent
   ],
   imports: [
     HttpClientModule,

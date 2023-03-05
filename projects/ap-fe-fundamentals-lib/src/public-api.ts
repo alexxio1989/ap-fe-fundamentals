@@ -5,6 +5,7 @@
 
 export * from './lib/ap-fe-fundamentals-lib.module';
 export * from './images-editor/images-editor.component';
+export * from './text-editor/text-editor.component';
 export * from './service/utente.service';
 export * from './service/delegate.service';
 export * from './service/servizio.service';

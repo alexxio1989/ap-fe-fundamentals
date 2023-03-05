@@ -13,10 +13,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { TextEditorComponent } from '../text-editor/text-editor.component';
 
 @NgModule({
   declarations: [
-    ImagesEditorComponent
+    ImagesEditorComponent,
+    TextEditorComponent
   ],
   imports: [
     HttpClientModule,
@@ -34,7 +36,8 @@ import { HttpClientModule } from '@angular/common/http';
     AngularEditorModule
   ],
   exports: [
-    ImagesEditorComponent
+    ImagesEditorComponent,
+    TextEditorComponent
   ]
 })
 export class ApFeFundamentalsLibModule { }
