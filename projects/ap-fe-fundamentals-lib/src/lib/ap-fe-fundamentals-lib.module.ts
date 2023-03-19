@@ -14,11 +14,13 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TextEditorComponent } from '../text-editor/text-editor.component';
+import { CardServizioComponent } from '../card-servizio/card-servizio.component';
 
 @NgModule({
   declarations: [
     ImagesEditorComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    CardServizioComponent
   ],
   imports: [
     HttpClientModule,
@@ -37,7 +39,8 @@ import { TextEditorComponent } from '../text-editor/text-editor.component';
   ],
   exports: [
     ImagesEditorComponent,
-    TextEditorComponent
+    TextEditorComponent,
+    CardServizioComponent
   ]
 })
 export class ApFeFundamentalsLibModule { }

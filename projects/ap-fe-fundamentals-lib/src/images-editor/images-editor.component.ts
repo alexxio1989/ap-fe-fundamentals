@@ -22,22 +22,31 @@ export class ImagesEditorComponent implements OnInit {
   scale = 1;
   containWithinAspectRatio = false;
   transform: ImageTransform = {};
+  edited = false;
 
   constructor() {}
 
   ngOnInit(): void {
-    if(!this.images || this.images.length === 0){
+    this.images.forEach(element => {
+      let editdableImg = new EditableImg()
+      editdableImg.id = element.id
+      editdableImg.base64 = element.base64
+      editdableImg.url = element.url
+      this.imagesEditable.push(editdableImg)
+    });
+  }
 
-      this.addAction()
-    } else {
-      this.images.forEach(element => {
-        let editdableImg = new EditableImg()
-        editdableImg.id = element.id
-        editdableImg.base64 = element.base64
-        editdableImg.url = element.url
-        this.imagesEditable.push(editdableImg)
-      });
-    }
+  set(){
+    this.imagesEditable = []
+    this.images.forEach(element => {
+      let editdableImg = new EditableImg()
+      editdableImg.id = element.id
+      editdableImg.base64 = element.base64
+      editdableImg.url = element.url
+      editdableImg.edit = false;
+      editdableImg.showCropper = false;
+      this.imagesEditable.push(editdableImg)
+    });
   }
 
   fileChangeEvent(event: any , img:EditableImg): void {
@@ -138,12 +147,15 @@ export class ImagesEditorComponent implements OnInit {
     this.imagesEditable.push(newImg)
   }
 
-  removeAction(img:EditableImg){
-    this.imagesEditable = this.imagesEditable.filter(img => img.id !== img.id);
+  removeAction(imgRemoved:EditableImg){
+    let filtred = this.imagesEditable.filter(img => img.id !== imgRemoved.id);
+    this.imagesEditable = filtred
+    this.emit()
   }
 
   emit() {
     let newImagesArray :ImageDto[] = []
+    this.edited = false;
     this.imagesEditable.forEach(element => {
       let img = new ImageDto()
       img.id = element.id.startsWith('TEMP') ? null : element.id
@@ -151,6 +163,7 @@ export class ImagesEditorComponent implements OnInit {
       img.url = element.url
       newImagesArray.push(img)
     });
+    //this.set()
     this.imagesEmitter.emit(newImagesArray);
   }
 }

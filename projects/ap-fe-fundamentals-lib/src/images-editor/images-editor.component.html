@@ -2,7 +2,8 @@
             
     <div class="col-12 bg-light p-3 mb-3 d-flex justify-content-end">
         <button mat-stroked-button (click)="addAction()" color="success">Nuova immagine</button>
-        <button mat-stroked-button (click)="emit()" color="primary" class="ms-2" *ngIf="imagesEditable && imagesEditable.length > 0">Conferma immagini</button>
+        <button mat-stroked-button (click)="emit()" color="primary" class="ms-2" *ngIf="edited">Conferma immagini</button>
+        <button mat-stroked-button (click)="set()" color="accentz" class="ms-2" *ngIf="edited">Annulla</button>
 
     </div>
     <div *ngFor="let img of imagesEditable; let i = index" class="col-12 d-flex justify-content-center">
@@ -19,7 +20,7 @@
                     <div *ngIf="img.edit" class="col-12 d-flex justify-content-center d-flex align-items-center flex-column">
                         <input class="form-control form-control-sm " id="formFileSm"
                             (change)="fileChangeEvent($event , img )" type="file">
-                            <button *ngIf="img.imageChangedEvent" mat-button class="mt-2" (click)="img.edit = !img.edit">Conferma</button>    
+                            <button *ngIf="img.imageChangedEvent" mat-button class="mt-2" (click)="img.edit = !img.edit ; edited = true">Conferma</button>    
                     </div>
                     
                 </div>

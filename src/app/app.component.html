@@ -1,3 +1,12 @@
-{{title}}
-<app-text-editor [title]="'Testo di prova'" [(text)]="title"></app-text-editor>
-<app-images-editor ></app-images-editor>
+
+<div class="row mb-3 p-4">
+    <div class="col-12 d-flex justify-content-center">
+            <app-card-servizio [prodotto]="prodottoDto"></app-card-servizio>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <app-images-editor (imagesEmitter)="retrieveImges($event)"></app-images-editor>
+
+    </div>
+</div>
