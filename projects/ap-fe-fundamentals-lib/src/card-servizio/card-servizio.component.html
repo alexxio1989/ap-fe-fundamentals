@@ -26,7 +26,7 @@
           <div class="d-flex flex-column mb-2"> <span class="price">{{servizio.prezzo | currency:'EUR'}}</span> </div>
       </div>
       <div class="d-flex justify-content-between align-items-center">
-        <p class="sub-title-card ">{{servizio.nomeExt}}</p>
+        <div class="sub-title-card " [innerHTML]="servizio.nomeExt"></div>
     </div>
      
       <div class="d-flex justify-content-end">

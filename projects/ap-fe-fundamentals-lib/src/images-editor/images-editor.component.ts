@@ -27,13 +27,15 @@ export class ImagesEditorComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.images.forEach(element => {
-      let editdableImg = new EditableImg()
-      editdableImg.id = element.id
-      editdableImg.base64 = element.base64
-      editdableImg.url = element.url
-      this.imagesEditable.push(editdableImg)
-    });
+    if(this.images){
+      this.images.forEach(element => {
+        let editdableImg = new EditableImg()
+        editdableImg.id = element.id
+        editdableImg.base64 = element.base64
+        editdableImg.url = element.url
+        this.imagesEditable.push(editdableImg)
+      });
+    }
   }
 
   set(){
@@ -156,14 +158,15 @@ export class ImagesEditorComponent implements OnInit {
   emit() {
     let newImagesArray :ImageDto[] = []
     this.edited = false;
-    this.imagesEditable.forEach(element => {
-      let img = new ImageDto()
-      img.id = element.id.startsWith('TEMP') ? null : element.id
-      img.base64 = element.base64
-      img.url = element.url
-      newImagesArray.push(img)
-    });
-    //this.set()
+    if(this.imagesEditable && this.imagesEditable.length > 0){
+      this.imagesEditable.forEach(element => {
+        let img = new ImageDto()
+        img.id = element.id.startsWith('TEMP') ? null : element.id
+        img.base64 = element.base64
+        img.url = element.url
+        newImagesArray.push(img)
+      });
+    }
     this.imagesEmitter.emit(newImagesArray);
   }
 }

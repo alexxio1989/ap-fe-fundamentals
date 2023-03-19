@@ -1,6 +1,6 @@
 {
   "name": "@alexxio1989/ap-fe-fundamentals-lib",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "peerDependencies": {
     "@angular/animations": "^14.0.0",
     "@angular/common": "^14.0.0",
