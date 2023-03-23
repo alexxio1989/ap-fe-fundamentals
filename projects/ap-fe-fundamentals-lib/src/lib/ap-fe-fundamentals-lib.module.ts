@@ -18,6 +18,7 @@ import { CardServizioComponent } from '../card-servizio/card-servizio.component'
 import { IncrementerComponent } from '../incrementer/incrementer.component';
 import { DialogDetailComponent } from '../card-servizio/dialog-detail/dialog-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PaypalButtonComponent } from '../paypal-button/paypal-button.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TextEditorComponent,
     CardServizioComponent,
     IncrementerComponent,
-    DialogDetailComponent
+    DialogDetailComponent,
+    PaypalButtonComponent
   ],
   imports: [
     HttpClientModule,
@@ -48,7 +50,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TextEditorComponent,
     CardServizioComponent,
     IncrementerComponent,
-    DialogDetailComponent
+    DialogDetailComponent,
+    PaypalButtonComponent
   ]
 })
 export class ApFeFundamentalsLibModule { }

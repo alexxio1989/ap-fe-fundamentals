@@ -7,6 +7,7 @@ import { ServizioDto } from '../../dto/servizioDto';
 import { defaultImg } from '../../images-editor/default-img';
 import { AcquistoProdottoDto } from '../../dto/acquistoProdottoDto';
 import { AcquistoEventoDto} from '../../dto/acquistoEventoDto';
+import { ConfiguratoreService } from '../../service/configuratore.service';
 
 @Component({
   selector: 'app-dialog-detail',
@@ -28,7 +29,9 @@ export class DialogDetailComponent implements OnInit {
 
   acquistoEvento : AcquistoEventoDto
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
+  totPrice = 0;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,public config:ConfiguratoreService) { }
 
   ngOnInit(): void {
     this.actionDetail = true;
@@ -44,5 +47,16 @@ export class DialogDetailComponent implements OnInit {
       this.acquistoEvento = new AcquistoEventoDto();
     }
   }
+
+  retrieveQuantityProdotto(value : number){
+    this.acquistoProdotto.quantita = value;
+    this.totPrice = this.acquistoProdotto.quantita && this.acquistoProdotto.quantita > 0 ? ( this.config.countValue(this.prodotto.prezzo) ) * this.acquistoProdotto.quantita : 0
+  }
+
+  retrieveQuantityEvento(value : number){
+    this.acquistoEvento.quantita = value;
+  }
+
+
 
 }

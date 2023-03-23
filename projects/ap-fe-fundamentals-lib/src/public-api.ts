@@ -9,10 +9,12 @@ export * from './text-editor/text-editor.component';
 export * from './card-servizio/card-servizio.component';
 export * from './incrementer/incrementer.component';
 export * from './card-servizio/dialog-detail/dialog-detail.component'
+export * from './paypal-button/paypal-button.component'
 export * from './service/utente.service';
 export * from './service/delegate.service';
 export * from './service/servizio.service';
 export * from './service/tipo-servizo.service';
+export * from './service/configuratore.service';
 export * from './dto/acquistoDto';
 export * from './dto/acquistoEventoDto';
 export * from './dto/acquistoProdottoDto';
@@ -31,3 +33,4 @@ export * from './dto/tokenDto';
 export * from './dto/utenteDto';
 export * from './dto/typeServizioDto';
 export * from './dto/editableImg';
+export * from './dto/configurazioneDto';

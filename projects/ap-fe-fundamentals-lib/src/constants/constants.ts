@@ -8,4 +8,5 @@ export class Constants{
     public static ID_UTENTE = 'ID_UTENTE' 
     public static SUPER_USER = 'SU' 
     public static USER = 'U'
+    public static CONFIG = 'CONFIG'
 }
