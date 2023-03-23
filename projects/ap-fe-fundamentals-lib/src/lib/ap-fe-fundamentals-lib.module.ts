@@ -15,12 +15,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { TextEditorComponent } from '../text-editor/text-editor.component';
 import { CardServizioComponent } from '../card-servizio/card-servizio.component';
+import { IncrementerComponent } from '../incrementer/incrementer.component';
+import { DialogDetailComponent } from '../card-servizio/dialog-detail/dialog-detail.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     ImagesEditorComponent,
     TextEditorComponent,
-    CardServizioComponent
+    CardServizioComponent,
+    IncrementerComponent,
+    DialogDetailComponent
   ],
   imports: [
     HttpClientModule,
@@ -35,12 +40,15 @@ import { CardServizioComponent } from '../card-servizio/card-servizio.component'
     MatInputModule,
     MatMenuModule,
     MatDialogModule,
-    AngularEditorModule
+    AngularEditorModule,
+    BrowserAnimationsModule
   ],
   exports: [
     ImagesEditorComponent,
     TextEditorComponent,
-    CardServizioComponent
+    CardServizioComponent,
+    IncrementerComponent,
+    DialogDetailComponent
   ]
 })
 export class ApFeFundamentalsLibModule { }

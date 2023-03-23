@@ -1,0 +1,48 @@
+<h4 class="mb-0 title-detail " mat-dialog-title>{{servizio.nome}}</h4>
+<p class="sub-title-detail">{{servizio.nomeExt}}</p>
+<div mat-dialog-content>
+
+    <div *ngIf="actionDetail" class="row bg-light p-2">
+        <div class="col-12 d-flex justify-content-center">
+            <p class="detail-intro">Dettaglio</p>
+        </div>
+        <div class="col-12 bg-white rounded" [innerHTML]="servizio.descrizione">
+
+        </div>
+    </div>
+
+    <div *ngIf="actionAcquisto" class="row bg-light p-2 pt-3">
+        <div class="col-12 d-flex justify-content-center">
+            <p class="detail-intro">Completa l'acquisto</p>
+        </div>
+        <div class="col-8 bg-white rounded d-flex flex-column p-2 pt-3" >
+            <p class="mb-0"> <small>Prezzo unitario ( Iva esclusa ) : {{servizio.prezzo | currency:'EUR'}}</small></p>
+            <p class="info-tax"><small>Prezzo comprensivo di Iva ( al 22% ) : {{servizio.prezzo | currency:'EUR'}}</small></p>
+        </div>
+        <div class="col-4 bg-white rounded d-flex justify-content-center pt-2" >
+            <app-incrementer class="mt-1" [label]="'unità'" 
+                             (counterEmitter)="acquistoProdotto.quantita = $event" 
+                             [value]="0" 
+                             [step]="1"
+                             [min]="0" 
+                             [max]="9"></app-incrementer>
+        </div>
+    </div>
+
+    <div *ngIf="actionPrenotazione" class="row bg-light p-2">
+        <div class="col-12 d-flex justify-content-center">
+            <p class="detail-intro">Completa la prenotazione</p>
+        </div>
+        <div class="col-12 bg-white rounded" >
+
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close >Chiudi</button>
+    <button mat-button *ngIf=" actionAcquisto && prodotto" (click)="actionAcquisto = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
+    <button mat-button *ngIf=" actionPrenotazione && evento" (click)="actionPrenotazione = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
+
+    <button mat-button *ngIf="prodotto && !actionAcquisto" cdkFocusInitial (click)="actionAcquisto = true ; actionDetail = false" color="primary">Procedi all'acquisto</button>
+    <button mat-button *ngIf="evento && !actionPrenotazione"  cdkFocusInitial (click)="actionPrenotazione = true ; actionDetail = false" color="primary">Procedi alla prenotazione</button>
+</div>
