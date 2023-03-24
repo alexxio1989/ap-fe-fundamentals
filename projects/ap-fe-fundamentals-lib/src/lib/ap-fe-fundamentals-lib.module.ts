@@ -19,6 +19,7 @@ import { IncrementerComponent } from '../incrementer/incrementer.component';
 import { DialogDetailComponent } from '../card-servizio/dialog-detail/dialog-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaypalButtonComponent } from '../paypal-button/paypal-button.component';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { PaypalButtonComponent } from '../paypal-button/paypal-button.component'
     MatMenuModule,
     MatDialogModule,
     AngularEditorModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxPayPalModule
   ],
   exports: [
     ImagesEditorComponent,

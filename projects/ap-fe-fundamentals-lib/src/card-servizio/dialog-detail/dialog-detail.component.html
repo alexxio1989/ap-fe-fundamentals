@@ -49,5 +49,5 @@
 
     <button mat-button *ngIf="prodotto && !actionAcquisto" cdkFocusInitial (click)="actionAcquisto = true ; actionDetail = false" color="primary">Procedi all'acquisto</button>
     <button mat-button *ngIf="evento && !actionPrenotazione"  cdkFocusInitial (click)="actionPrenotazione = true ; actionDetail = false" color="primary">Procedi alla prenotazione</button>
-    <app-paypal-button></app-paypal-button>
+    <app-paypal-button [totPrice]="totPrice" [acquistoEvento]="acquistoEvento" [acquistoProdotto]="acquistoProdotto" *ngIf=" (actionAcquisto || actionPrenotazione) && totPrice > 0"></app-paypal-button>
 </div>

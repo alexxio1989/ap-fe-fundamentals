@@ -39,12 +39,14 @@ export class DialogDetailComponent implements OnInit {
       this.prodotto = this.data.prodotto
       this.servizio = this.prodotto
       this.acquistoProdotto = new AcquistoProdottoDto();
+      this.acquistoProdotto.prodotto = this.prodotto
     }
 
     if(this.data.evento){
       this.evento = this.data.evento
       this.servizio = this.evento
       this.acquistoEvento = new AcquistoEventoDto();
+      this.acquistoEvento.evento = this.evento;
     }
   }
 
