@@ -1,140 +1,178 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AcquistoProdottoDto } from '../dto/acquistoProdottoDto';
 import { AcquistoEventoDto} from '../dto/acquistoEventoDto';
-
 import {
   IPayPalConfig,
   ICreateOrderRequest 
 } from 'ngx-paypal';
+import { AcquistoDto } from '../dto/acquistoDto';
+import { ITransactionItem } from 'ngx-paypal';
+import { TypeAcquistoDto } from '../dto/typeAcquistoDto';
 
 @Component({
   selector: 'app-paypal-button',
   templateUrl: './paypal-button.component.html',
-  styleUrls: ['./paypal-button.component.scss']
+  styleUrls: ['./paypal-button.component.scss'],
 })
 export class PaypalButtonComponent implements OnInit {
+  @Input() tax: number;
 
-  @Input() totPrice : number;
+  @Input() acquisti: any[];
 
-  @Input() acquistoProdotto : AcquistoProdottoDto
+  public payPalConfig?: IPayPalConfig;
 
-  @Input() acquistoEvento : AcquistoEventoDto
+  amount: string;
 
-  public payPalConfig ? : IPayPalConfig;
+  ngOnInit(): void {
+    this.initConfig();
+  }
 
-  amount :string;
+  private initConfig(): void {
+    this.payPalConfig = {
+      currency: 'EUR',
+      clientId:
+        'AYvTYAZb9NjbR0j3otnrqOWRkfEyO5JcGUKNhVznZuNKUqGzEXF0KGBeOlFmPNTlAmsg75VOMc87mZSz',
+      createOrderOnClient: (data) =>
+        <ICreateOrderRequest>{
+          intent: 'CAPTURE',
+          purchase_units: [
+            {
+              amount: {
+                currency_code: 'EUR',
+                value: this.getTotal(),
+                breakdown: {
+                  item_total: {
+                    currency_code: 'EUR',
+                    value: this.getTotal(),
+                  },
+                },
+              },
+              items: this.getItems(this.acquisti),
+            },
+          ],
+        },
+      advanced: {
+        commit: 'true',
+      },
+      style: {
+        label: 'paypal',
+        layout: 'vertical',
+        height: 36,
+      },
+      onApprove: (data, actions) => {
+        console.log(
+          'onApprove - transaction was approved, but not authorized',
+          data,
+          actions
+        );
+        actions.order.get().then((details: any) => {
+          console.log(
+            'onApprove - you can get full order details inside onApprove: ',
+            details
+          );
+        });
+      },
+      onClientAuthorization: (data) => {
+        console.log(
+          'onClientAuthorization - you should probably inform your server about completed transaction at this point',
+          data
+        );
+      },
+      onCancel: (data, actions) => {
+        console.log('OnCancel', data, actions);
+      },
+      onError: (err) => {
+        console.log('OnError', err);
+      },
+      onClick: (data, actions) => {
+        console.log('onClick', data, actions);
+      },
+    };
+  }
 
-    ngOnInit(): void {
-        this.amount = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'EUR',
-      }).format(this.totPrice);
-        this.amount = this.amount.substring(1,this.amount.length)
-        console.log(this.amount)
-        
-        this.initConfig();
+  
+
+  getItems(acquisti: any[]): ITransactionItem[] {
+    let items: ITransactionItem[] = [];
+
+    acquisti.forEach((acquistoDto) => {
+      items.push(this.mapItem(acquistoDto));
+    });
+
+    return items;
+  }
+
+  mapItem(acquisto: any): ITransactionItem {
+    let item : ITransactionItem;
+    item = {
+      name: this.getTitleAcquisto(acquisto),
+      quantity: '' + this.getQuantity(acquisto),
+      category: 'DIGITAL_GOODS',
+      unit_amount: {
+        currency_code: 'EUR',
+        value: '' + this.getAmount(acquisto),
+      },
+    };
+
+    return item;
+  }
+
+  getTitleAcquisto(acquisto: any): string {
+    if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
+      return acquisto.prodotto.nome;
+    } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
+      return acquisto.evento.nome;
     }
+    return '';
+  }
 
-    private initConfig(): void {
-        this.payPalConfig = {
-            currency: 'EUR',
-            clientId: 'AYvTYAZb9NjbR0j3otnrqOWRkfEyO5JcGUKNhVznZuNKUqGzEXF0KGBeOlFmPNTlAmsg75VOMc87mZSz',
-            createOrderOnClient: (data) => < ICreateOrderRequest > {
-                intent: 'CAPTURE',
-                purchase_units: [{
-                    amount: {
-                        currency_code: 'EUR',
-                        value: this.getAmount(),
-                        breakdown: {
-                            item_total: {
-                                currency_code: 'EUR',
-                                value: this.getAmount()
-                            }
-                        }
-                    },
-                    items: [{
-                        name: 'Acquisto ' ,
-                        quantity: ''+this.getQuantity(),
-                        category: 'DIGITAL_GOODS',
-                        unit_amount: {
-                            currency_code: 'EUR',
-                            value: ''+this.getAmount(),
-                        },
-                    }]
-                }]
-            },
-            advanced: {
-                commit: 'true'
-            },
-            style: {
-                label: 'paypal',
-                layout: 'horizontal',
-                height:36,
-                
-            },
-            onApprove: (data, actions) => {
-                console.log('onApprove - transaction was approved, but not authorized', data, actions);
-                actions.order.get().then((details: any) => {
-                    console.log('onApprove - you can get full order details inside onApprove: ', details);
-                });
-
-            },
-            onClientAuthorization: (data) => {
-                console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
-            },
-            onCancel: (data, actions) => {
-                console.log('OnCancel', data, actions);
-
-            },
-            onError: err => {
-                console.log('OnError', err);
-            },
-            onClick: (data, actions) => {
-                console.log('onClick', data, actions);
-            }
-        };
+  getCategoryAcquisto(acquisto: any): string {
+    if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
+      return acquisto.prodotto.nome;
+    } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
+      return acquisto.evento.nome;
     }
+    return '';
+  }
 
-    getTitleAcquisto():string{
-      if(this.acquistoEvento){
-        return this.acquistoEvento.evento.nome
-      }
-      if(this.acquistoProdotto){
-        return this.acquistoProdotto.prodotto.nome
-      }
-      return '';
-    }
+  getQuantity(acquisto: AcquistoDto): number {
+    return acquisto.quantita;
+  }
 
-    getCategoryAcquisto():string{
-      return 'alessiopinna.it';
+  getAmount(acquisto: any): string {
+    if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
+      let amount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'EUR',
+      }).format(acquisto.prodotto.prezzo);
+      return amount.substring(1, amount.length);
+    } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
+      let amount = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'EUR',
+      }).format(acquisto.evento.prezzo);
+      return amount.substring(1, amount.length);
     }
+    return '' + 0;
+  }
 
-    getQuantity():number{
-      if(this.acquistoEvento){
-        return this.acquistoEvento.quantita
+  getTotal():string{
+    let total = 0;
+    this.acquisti.forEach(acquisto => {
+      if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
+        total = total + (acquisto.prodotto.prezzo * acquisto.quantita)
+      } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
+        total = total + (acquisto.evento.prezzo * acquisto.quantita)
       }
-      if(this.acquistoProdotto){
-        return this.acquistoProdotto.quantita
-      }
-      return 0;
-    }
 
-    getAmount():string{
-      if(this.acquistoEvento){
-        let amount = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'EUR',
-        }).format(this.acquistoEvento.evento.prezzo);
-        return amount.substring(1,amount.length)
-      }
-      if(this.acquistoProdotto){
-        let amount = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'EUR',
-        }).format(this.acquistoProdotto.prodotto.prezzo);
-        return amount.substring(1,amount.length)
-      }
-      return ''+0;
-    }
+    });
+
+    this.amount = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(total);
+    return this.amount.substring(1, this.amount.length);
+  }
+
 
 }

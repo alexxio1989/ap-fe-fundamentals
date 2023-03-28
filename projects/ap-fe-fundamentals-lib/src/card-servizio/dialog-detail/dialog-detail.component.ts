@@ -8,6 +8,7 @@ import { defaultImg } from '../../images-editor/default-img';
 import { AcquistoProdottoDto } from '../../dto/acquistoProdottoDto';
 import { AcquistoEventoDto} from '../../dto/acquistoEventoDto';
 import { ConfiguratoreService } from '../../service/configuratore.service';
+import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
 
 @Component({
   selector: 'app-dialog-detail',
@@ -31,6 +32,8 @@ export class DialogDetailComponent implements OnInit {
 
   totPrice = 0;
 
+  acquisti : any[] = []
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,public config:ConfiguratoreService) { }
 
   ngOnInit(): void {
@@ -39,14 +42,18 @@ export class DialogDetailComponent implements OnInit {
       this.prodotto = this.data.prodotto
       this.servizio = this.prodotto
       this.acquistoProdotto = new AcquistoProdottoDto();
+      this.acquistoProdotto.type = TypeAcquistoDto.ACQUISTO_PRODOTTO
       this.acquistoProdotto.prodotto = this.prodotto
+      this.acquisti.push(this.acquistoProdotto)
     }
 
     if(this.data.evento){
       this.evento = this.data.evento
       this.servizio = this.evento
       this.acquistoEvento = new AcquistoEventoDto();
+      this.acquistoProdotto.type = TypeAcquistoDto.ACQUISTO_EVENTO
       this.acquistoEvento.evento = this.evento;
+      this.acquisti.push(this.acquistoEvento)
     }
   }
 

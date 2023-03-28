@@ -32,5 +32,6 @@ export * from './dto/servizioDto';
 export * from './dto/tokenDto';
 export * from './dto/utenteDto';
 export * from './dto/typeServizioDto';
+export * from './dto/typeAcquistoDto';
 export * from './dto/editableImg';
 export * from './dto/configurazioneDto';

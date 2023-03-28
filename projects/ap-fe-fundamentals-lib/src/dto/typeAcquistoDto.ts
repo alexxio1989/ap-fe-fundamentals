@@ -1,0 +1,4 @@
+export enum TypeAcquistoDto{
+    ACQUISTO_PRODOTTO = 'ACQUISTO_PRODOTTO',
+    ACQUISTO_EVENTO = 'ACQUISTO_EVENTO'
+}

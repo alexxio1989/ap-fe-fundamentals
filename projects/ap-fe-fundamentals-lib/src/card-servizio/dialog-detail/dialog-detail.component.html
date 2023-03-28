@@ -1,5 +1,5 @@
 <h4 class="mb-0 title-detail " mat-dialog-title>{{servizio.nome}}</h4>
-<div class="sub-title-detail" [innerHTML]="servizio.nomeExt"></div>
+<div class="sub-title-detail mb-2" [innerHTML]="servizio.nomeExt"></div>
 <div mat-dialog-content>
 
     <div *ngIf="actionDetail" class="row bg-light p-2">
@@ -42,12 +42,18 @@
         </div>
     </div>
 </div>
-<div mat-dialog-actions>
-    <button mat-button mat-dialog-close >Chiudi</button>
-    <button mat-button *ngIf=" actionAcquisto && prodotto" (click)="actionAcquisto = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
-    <button mat-button *ngIf=" actionPrenotazione && evento" (click)="actionPrenotazione = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
+<div mat-dialog-actions class="row">
+    <div class="col-12">
+        <button mat-button mat-dialog-close >Chiudi</button>
+        <button mat-button *ngIf=" actionAcquisto && prodotto" (click)="actionAcquisto = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
+        <button mat-button *ngIf=" actionPrenotazione && evento" (click)="actionPrenotazione = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
+    
+        <button mat-button *ngIf="prodotto && !actionAcquisto" cdkFocusInitial (click)="actionAcquisto = true ; actionDetail = false" color="primary">Procedi all'acquisto</button>
+        <button mat-button *ngIf="evento && !actionPrenotazione"  cdkFocusInitial (click)="actionPrenotazione = true ; actionDetail = false" color="primary">Procedi alla prenotazione</button>
+    </div>
 
-    <button mat-button *ngIf="prodotto && !actionAcquisto" cdkFocusInitial (click)="actionAcquisto = true ; actionDetail = false" color="primary">Procedi all'acquisto</button>
-    <button mat-button *ngIf="evento && !actionPrenotazione"  cdkFocusInitial (click)="actionPrenotazione = true ; actionDetail = false" color="primary">Procedi alla prenotazione</button>
-    <app-paypal-button [totPrice]="totPrice" [acquistoEvento]="acquistoEvento" [acquistoProdotto]="acquistoProdotto" *ngIf=" (actionAcquisto || actionPrenotazione) && totPrice > 0"></app-paypal-button>
+    <div *ngIf=" (actionAcquisto || actionPrenotazione) && totPrice > 0"  class="col-12 mt-2">
+        <app-paypal-button [acquisti]="acquisti"></app-paypal-button>
+
+    </div>
 </div>
