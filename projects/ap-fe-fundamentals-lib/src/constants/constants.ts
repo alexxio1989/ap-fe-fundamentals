@@ -3,6 +3,7 @@ export class Constants{
     public static PRODOTTO = 'PRODOTTO' 
     public static EVENTI = 'EVENTI'
     public static PRODOTTI = 'PRODOTTI'
+    public static ACQUISTI = 'ACQUISTI'
     public static UTENTE = 'UTENTE' 
     public static TOKEN = 'TOKEN' 
     public static ID_UTENTE = 'ID_UTENTE' 

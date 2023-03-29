@@ -45,11 +45,10 @@
 <div mat-dialog-actions class="row">
     <div class="col-12">
         <button mat-button mat-dialog-close >Chiudi</button>
-        <button mat-button *ngIf=" actionAcquisto && prodotto" (click)="actionAcquisto = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
-        <button mat-button *ngIf=" actionPrenotazione && evento" (click)="actionPrenotazione = false ; actionDetail = true" color="accent">Torna al dettaglio</button>
+        <button mat-button *ngIf="!actionDetail" (click)="backToDetail()" color="accent">Torna al dettaglio</button>
     
-        <button mat-button *ngIf="prodotto && !actionAcquisto" cdkFocusInitial (click)="actionAcquisto = true ; actionDetail = false" color="primary">Procedi all'acquisto</button>
-        <button mat-button *ngIf="evento && !actionPrenotazione"  cdkFocusInitial (click)="actionPrenotazione = true ; actionDetail = false" color="primary">Procedi alla prenotazione</button>
+        <button mat-button *ngIf="prodotto && !actionAcquisto" cdkFocusInitial (click)="actionProcedi()" color="primary">Acquista</button>
+        <button mat-button *ngIf="evento && !actionPrenotazione"  cdkFocusInitial (click)="actionProcedi()" color="primary">Prenota</button>
     </div>
 
     <div *ngIf=" (actionAcquisto || actionPrenotazione) && totPrice > 0"  class="col-12 mt-2">

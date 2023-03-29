@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AcquistoProdottoDto } from '../dto/acquistoProdottoDto';
-import { AcquistoEventoDto} from '../dto/acquistoEventoDto';
+import { Inject } from '@angular/core';
 import {
   IPayPalConfig,
   ICreateOrderRequest 
@@ -23,6 +22,11 @@ export class PaypalButtonComponent implements OnInit {
 
   amount: string;
 
+  constructor(
+    @Inject('environment') private environment : any
+  ) {
+  }
+
   ngOnInit(): void {
     this.initConfig();
   }
@@ -30,8 +34,7 @@ export class PaypalButtonComponent implements OnInit {
   private initConfig(): void {
     this.payPalConfig = {
       currency: 'EUR',
-      clientId:
-        'AYvTYAZb9NjbR0j3otnrqOWRkfEyO5JcGUKNhVznZuNKUqGzEXF0KGBeOlFmPNTlAmsg75VOMc87mZSz',
+      clientId:this.environment.paypalID,
       createOrderOnClient: (data) =>
         <ICreateOrderRequest>{
           intent: 'CAPTURE',

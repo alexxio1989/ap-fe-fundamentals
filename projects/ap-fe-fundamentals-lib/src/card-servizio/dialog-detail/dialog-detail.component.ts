@@ -9,6 +9,8 @@ import { AcquistoProdottoDto } from '../../dto/acquistoProdottoDto';
 import { AcquistoEventoDto} from '../../dto/acquistoEventoDto';
 import { ConfiguratoreService } from '../../service/configuratore.service';
 import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
+import { AcquistoService } from '../../service/acquisto.service';
+import { AcquistoDto } from '../../dto/acquistoDto';
 
 @Component({
   selector: 'app-dialog-detail',
@@ -34,7 +36,9 @@ export class DialogDetailComponent implements OnInit {
 
   acquisti : any[] = []
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,public config:ConfiguratoreService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              public config:ConfiguratoreService,
+              private as: AcquistoService) { }
 
   ngOnInit(): void {
     this.actionDetail = true;
@@ -66,6 +70,33 @@ export class DialogDetailComponent implements OnInit {
     this.acquistoEvento.quantita = value;
   }
 
+  actionProcedi(){
+    this.actionDetail = false;  
+    if(this.prodotto){
+      this.actionAcquisto = true;
+    }
 
+    if(this.evento){
+      this.actionPrenotazione = true;
+    }
+  }
+
+  backToDetail(){
+    this.actionDetail = true;  
+    this.actionAcquisto = false;
+    this.actionPrenotazione = false;
+  }
+
+  addToCarrello(){
+    let acquisti : AcquistoDto[] = []
+    if(this.acquistoEvento){
+      acquisti.push(this.acquistoEvento)
+    }
+    if(this.acquistoProdotto){
+      acquisti.push(this.acquistoProdotto)
+    }
+    
+    this.as.sbjObj.next(acquisti)
+  }
 
 }
