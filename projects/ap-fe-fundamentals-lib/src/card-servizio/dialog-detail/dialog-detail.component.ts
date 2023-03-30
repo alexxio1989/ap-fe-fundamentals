@@ -12,6 +12,13 @@ import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
 import { AcquistoService } from '../../service/acquisto.service';
 import { AcquistoDto } from '../../dto/acquistoDto';
 
+const ACTIONS = {
+  detail: 'DETAIL',
+  preAcquisto: 'PRE-ACQUISTO',
+  prePrenotazione: 'PRE-PRENOTAZIONE',
+  acquisto: 'ACQUISTO',
+}
+
 @Component({
   selector: 'app-dialog-detail',
   templateUrl: './dialog-detail.component.html',
@@ -24,24 +31,24 @@ export class DialogDetailComponent implements OnInit {
   servizio : ServizioDto;
   defaultImg = defaultImg.emptyImg
 
-  actionAcquisto = false;
-  actionPrenotazione = false;
-  actionDetail = true;
-
   acquistoProdotto : AcquistoProdottoDto
 
   acquistoEvento : AcquistoEventoDto
 
+  quantity = 0;
+
   totPrice = 0;
 
   acquisti : any[] = []
+
+  actionString: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public config:ConfiguratoreService,
               private as: AcquistoService) { }
 
   ngOnInit(): void {
-    this.actionDetail = true;
+    this.actionString = ACTIONS.detail;
     if(this.data.prodotto){
       this.prodotto = this.data.prodotto
       this.servizio = this.prodotto
@@ -61,30 +68,23 @@ export class DialogDetailComponent implements OnInit {
     }
   }
 
-  retrieveQuantityProdotto(value : number){
-    this.acquistoProdotto.quantita = value;
-    this.totPrice = this.acquistoProdotto.quantita && this.acquistoProdotto.quantita > 0 ? ( this.config.countValue(this.prodotto.prezzo) ) * this.acquistoProdotto.quantita : 0
-  }
-
-  retrieveQuantityEvento(value : number){
-    this.acquistoEvento.quantita = value;
-  }
-
-  actionProcedi(){
-    this.actionDetail = false;  
-    if(this.prodotto){
-      this.actionAcquisto = true;
+  retrieveQuantity(value : number){
+    if(this.acquistoProdotto){
+      this.acquistoProdotto.quantita = value;
+      this.totPrice = this.acquistoProdotto.quantita && this.acquistoProdotto.quantita > 0 ? ( this.config.countValue(this.prodotto.prezzo) ) * this.acquistoProdotto.quantita : 0
+      this.quantity = this.acquistoProdotto.quantita
     }
-
-    if(this.evento){
-      this.actionPrenotazione = true;
+    if(this.acquistoEvento ){
+      this.acquistoEvento.quantita = value;
+      this.totPrice = this.acquistoEvento.quantita && this.acquistoEvento.quantita > 0 ? ( this.config.countValue(this.prodotto.prezzo) ) * this.acquistoEvento.quantita : 0
+      this.quantity = this.acquistoEvento.quantita
     }
+    
   }
 
-  backToDetail(){
-    this.actionDetail = true;  
-    this.actionAcquisto = false;
-    this.actionPrenotazione = false;
+  action(action: string){
+
+    this.actionString = action;
   }
 
   addToCarrello(){

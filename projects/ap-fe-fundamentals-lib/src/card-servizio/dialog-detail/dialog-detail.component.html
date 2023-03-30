@@ -2,7 +2,7 @@
 <div class="sub-title-detail mb-2" [innerHTML]="servizio.nomeExt"></div>
 <div mat-dialog-content>
 
-    <div *ngIf="actionDetail" class="row bg-light p-2">
+    <div *ngIf="actionString === 'DETAIL'" class="row bg-light p-2">
         <div class="col-12 d-flex justify-content-center">
             <p class="detail-intro">Dettaglio</p>
         </div>
@@ -11,47 +11,65 @@
         </div>
     </div>
 
-    <div *ngIf="actionAcquisto" class="row bg-light p-2 pt-3">
+    <div *ngIf="actionString === 'PRE-ACQUISTO'" class="row bg-light p-2 pt-3">
         <div class="col-12 d-flex justify-content-center">
             <p class="detail-intro">Completa l'acquisto</p>
         </div>
-        <div class="col-8 bg-white rounded d-flex flex-column justify-content-center p-2 pt-3" >
+        <div class="col-8 bg-white rounded d-flex flex-column justify-content-center p-2 pt-3">
             <p class="mb-0"> <small>Prezzo unitario ( Iva esclusa ) : {{servizio.prezzo | currency:'EUR'}}</small></p>
-            <p class="info-tax"><small>Comprensivo di Iva ( al {{config.configurazione.localTax}}% ) : {{config.countValue(servizio.prezzo) | currency:'EUR'}}</small></p>
+            <p class="info-tax"><small>Comprensivo di Iva ( al {{config.configurazione.localTax}}% ) :
+                    {{config.countValue(servizio.prezzo) | currency:'EUR'}}</small></p>
         </div>
-        <div class="col-4 bg-white rounded d-flex justify-content-center pt-2" >
-            <app-incrementer class="mt-1" [label]="'unità'" 
-                             (counterEmitter)="retrieveQuantityProdotto($event) " 
-                             [value]="0" 
-                             [step]="1"
-                             [min]="0" 
-                             [max]="9"></app-incrementer>
+        <div class="col-4 bg-white rounded d-flex justify-content-center pt-2">
+            <app-incrementer class="mt-1" [label]="'unità'" (counterEmitter)="retrieveQuantity($event) "
+                [value]="quantity" [step]="1" [min]="0" [max]="9"></app-incrementer>
         </div>
 
-        <div class="col-12 bg-white rounded d-flex flex-column p-2 pt-3" >
+        <div class="col-12 bg-white rounded d-flex flex-column p-2 pt-3">
             <p class="mb-0"> <small>Totale ( Iva inclusa ) : {{totPrice| currency:'EUR'}}</small></p>
         </div>
     </div>
 
-    <div *ngIf="actionPrenotazione" class="row bg-light p-2">
+    <div *ngIf="actionString === 'PRE-PRENOTAZIONE'" class="row bg-light p-2">
         <div class="col-12 d-flex justify-content-center">
             <p class="detail-intro">Completa la prenotazione</p>
         </div>
-        <div class="col-12 bg-white rounded" >
+        <div class="col-12 bg-white rounded">
 
         </div>
     </div>
 </div>
 <div mat-dialog-actions class="row">
-    <div class="col-12">
-        <button mat-button mat-dialog-close >Chiudi</button>
-        <button mat-button *ngIf="!actionDetail" (click)="backToDetail()" color="accent">Torna al dettaglio</button>
-    
-        <button mat-button *ngIf="prodotto && !actionAcquisto" cdkFocusInitial (click)="actionProcedi()" color="primary">Acquista</button>
-        <button mat-button *ngIf="evento && !actionPrenotazione"  cdkFocusInitial (click)="actionProcedi()" color="primary">Prenota</button>
+    <div class="col-12 d-flex justify-content-end">
+        <button mat-button *ngIf="actionString !== 'DETAIL'" (click)="action('DETAIL')" color="accent">Torna al
+            dettaglio</button>
+
+        <button mat-button *ngIf="prodotto && (actionString === 'DETAIL') "
+            cdkFocusInitial (click)="action('PRE-ACQUISTO')" color="primary">Procedi all' acquisto</button>
+
+        <button mat-button *ngIf="evento && (actionString === 'DETAIL')" cdkFocusInitial
+            (click)="action('PRE-PRENOTAZIONE')" color="primary">Procedi alla prenotazione</button>
+        
+        <button mat-button *ngIf="totPrice > 0 && (actionString !== 'ACQUISTO' && actionString !== 'DETAIL' )" cdkFocusInitial
+            (click)="action('ACQUISTO')" class="ml-auto" color="primary">Acquista ora</button>
+
+        <button mat-button *ngIf="totPrice > 0 && (actionString !== 'ACQUISTO' && actionString !== 'DETAIL' )" cdkFocusInitial
+            (click)="addToCarrello()" class="ml-auto" color="primary">Aggiungi al carrello</button>
+        
+        <button mat-button *ngIf="prodotto && actionString !== 'DETAIL' && actionString === 'ACQUISTO'" cdkFocusInitial
+                (click)="action('PRE-ACQUISTO')" class="ml-auto" color="primary">Modifica acquisto</button>
+
+        <button mat-button *ngIf="evento && actionString !== 'DETAIL' && actionString === 'ACQUISTO'" cdkFocusInitial
+        (click)="action('PRE-PRENOTAZIONE')" class="ml-auto" color="primary">Modifica prenotazione</button>
     </div>
 
-    <div *ngIf=" (actionAcquisto || actionPrenotazione) && totPrice > 0"  class="col-12 mt-2">
+    <div *ngIf=" (actionString === 'ACQUISTO') && totPrice > 0" class="col-12 mt-2 ">
+        <div class="col-12 p-3 bg-light d-flex justify-content-center lign-items-center">
+            <p class="detail-intro align-self-center mb-0">Importo totale ( Iva inclusa ) :  {{totPrice| currency:'EUR'}}</p>
+        </div>
+    </div>
+
+    <div *ngIf=" (actionString === 'ACQUISTO') && totPrice > 0" class="col-12 mt-4">
         <app-paypal-button [acquisti]="acquisti"></app-paypal-button>
 
     </div>

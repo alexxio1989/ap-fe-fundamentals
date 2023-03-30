@@ -7,6 +7,8 @@ import {
 import { AcquistoDto } from '../dto/acquistoDto';
 import { ITransactionItem } from 'ngx-paypal';
 import { TypeAcquistoDto } from '../dto/typeAcquistoDto';
+import { ConfiguratoreService } from '../service/configuratore.service';
+import { getCurrencyString ,approximate } from '../util/util';
 
 @Component({
   selector: 'app-paypal-button',
@@ -23,7 +25,8 @@ export class PaypalButtonComponent implements OnInit {
   amount: string;
 
   constructor(
-    @Inject('environment') private environment : any
+    @Inject('environment') private environment : any,
+    public config:ConfiguratoreService
   ) {
   }
 
@@ -42,11 +45,11 @@ export class PaypalButtonComponent implements OnInit {
             {
               amount: {
                 currency_code: 'EUR',
-                value: this.getTotal(),
+                value: ''+this.getTotalItemsValue(),
                 breakdown: {
                   item_total: {
                     currency_code: 'EUR',
-                    value: this.getTotal(),
+                    value: ''+this.getTotalItemsValue(),
                   },
                 },
               },
@@ -113,10 +116,10 @@ export class PaypalButtonComponent implements OnInit {
       category: 'DIGITAL_GOODS',
       unit_amount: {
         currency_code: 'EUR',
-        value: '' + this.getAmount(acquisto),
+        value: ''+this.getAmountItem(acquisto),
       },
     };
-
+    console.log(JSON.stringify(item.unit_amount.value))
     return item;
   }
 
@@ -142,40 +145,25 @@ export class PaypalButtonComponent implements OnInit {
     return acquisto.quantita;
   }
 
-  getAmount(acquisto: any): string {
+  getAmountItem(acquisto: any): number {
+    let value = 0
     if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
-      let amount = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'EUR',
-      }).format(acquisto.prodotto.prezzo);
-      return amount.substring(1, amount.length);
+      value = this.config.countValue(acquisto.prodotto.prezzo);
+      value = approximate(value, 100)
     } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
-      let amount = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'EUR',
-      }).format(acquisto.evento.prezzo);
-      return amount.substring(1, amount.length);
+      value = this.config.countValue(acquisto.evento.prezzo)
+      value = approximate(value, 100)
     }
-    return '' + 0;
+    return value;
   }
 
-  getTotal():string{
+
+
+  private getTotalItemsValue() : number {
     let total = 0;
     this.acquisti.forEach(acquisto => {
-      if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
-        total = total + (acquisto.prodotto.prezzo * acquisto.quantita)
-      } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
-        total = total + (acquisto.evento.prezzo * acquisto.quantita)
-      }
-
+      total = total + (this.getAmountItem(acquisto) * acquisto.quantita)
     });
-
-    this.amount = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(total);
-    return this.amount.substring(1, this.amount.length);
+    return total;
   }
-
-
 }

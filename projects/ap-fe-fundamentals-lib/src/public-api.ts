@@ -36,3 +36,4 @@ export * from './dto/typeServizioDto';
 export * from './dto/typeAcquistoDto';
 export * from './dto/editableImg';
 export * from './dto/configurazioneDto';
+export * from './util/util';
