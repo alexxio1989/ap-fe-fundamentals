@@ -20,6 +20,9 @@ import { DialogDetailComponent } from '../card-servizio/dialog-detail/dialog-det
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaypalButtonComponent } from '../paypal-button/paypal-button.component';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { CartComponent } from '../cart/cart.component';
+import {MatBadgeModule} from '@angular/material/badge';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     CardServizioComponent,
     IncrementerComponent,
     DialogDetailComponent,
-    PaypalButtonComponent
+    PaypalButtonComponent,
+    CartComponent
   ],
   imports: [
     HttpClientModule,
@@ -45,7 +49,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     MatDialogModule,
     AngularEditorModule,
     BrowserAnimationsModule,
-    NgxPayPalModule
+    NgxPayPalModule,
+    MatBadgeModule
   ],
   exports: [
     ImagesEditorComponent,
@@ -53,7 +58,8 @@ import { NgxPayPalModule } from 'ngx-paypal';
     CardServizioComponent,
     IncrementerComponent,
     DialogDetailComponent,
-    PaypalButtonComponent
+    PaypalButtonComponent,
+    CartComponent
   ]
 })
 export class ApFeFundamentalsLibModule { }

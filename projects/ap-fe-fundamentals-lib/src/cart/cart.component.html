@@ -1,0 +1,19 @@
+
+<button *ngIf="acquisti.length === 0" mat-icon-button aria-label="Example icon-button with a menu">
+    <i class="pi pi-shopping-cart" style="font-size: 1.3rem"></i>
+</button>
+
+<button *ngIf="acquisti.length > 0" mat-icon-button #menuTrigger="matMenuTrigger" (menuOpened)="open()"   [matMenuTriggerFor]="menu" matBadge="{{acquisti.length}}" matBadgeColor="warn" aria-label="Example icon-button with a menu">
+    <i class="pi pi-shopping-cart" style="font-size: 1.3rem"></i>
+</button>
+  <mat-menu #menu="matMenu" (closed)="close($event)">
+      <div *ngIf="menuOpen" class="row">
+          <div *ngFor="let acquisto of acquisti" class="col-12">
+            <p>{{getDetail(acquisto).title}}</p>
+            <p>{{getDetail(acquisto).amount | currency:'EUR'}}</p>
+          </div>
+          <div class="col-12">
+             <app-paypal-button [acquisti]="acquisti"></app-paypal-button>
+        </div>
+      </div>
+  </mat-menu>
