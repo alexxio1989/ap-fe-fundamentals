@@ -7,6 +7,7 @@ import { IServiceCrud } from './IServiceCrud';
 import { AbstractService } from './abstractService';
 import { Inject } from '@angular/core';
 import { ResponseAcquisto} from '../dto/response/responseAcquisto';
+import { TypeAcquistoDto } from '../dto/typeAcquistoDto';
 
 @Injectable({
   providedIn: 'root',
@@ -46,6 +47,15 @@ export class AcquistoService extends AbstractService<any> implements IServiceCru
 
   get(id: string): Observable<AcquistoDto[]> {
     throw new Error('Method not implemented.');
+  }
+
+  getIDService(acquisto: any): string {
+    if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
+      return acquisto.prodotto.id;
+    } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
+      return acquisto.evento.id;
+    }
+    return '';
   }
 
   

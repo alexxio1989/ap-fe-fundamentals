@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { EventoDto } from '../../dto/eventoDto';
 import { ProdottoDto } from '../../dto/prodottoDto';
@@ -11,6 +11,7 @@ import { ConfiguratoreService } from '../../service/configuratore.service';
 import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
 import { AcquistoService } from '../../service/acquisto.service';
 import { AcquistoDto } from '../../dto/acquistoDto';
+import { Constants } from '../../constants/constants';
 
 const ACTIONS = {
   detail: 'DETAIL',
@@ -44,6 +45,7 @@ export class DialogDetailComponent implements OnInit {
   actionString: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              public dialogRef: MatDialogRef<DialogDetailComponent>,
               public config:ConfiguratoreService,
               private as: AcquistoService) { }
 
@@ -88,15 +90,38 @@ export class DialogDetailComponent implements OnInit {
   }
 
   addToCarrello(){
-    let acquisti : AcquistoDto[] = []
+
+    let acquisti = this.as.getObj(Constants.ACQUISTI) as AcquistoDto[];
+
+    if(acquisti && acquisti.length > 0){
+      acquisti = acquisti.filter(a => this.as.getIDService(a) !== this.getIDService());
+      if(this.acquistoEvento){
+        acquisti.push(this.acquistoEvento)
+      }
+      if(this.acquistoProdotto){
+        acquisti.push(this.acquistoProdotto)
+      }
+    } else {
+      acquisti = []
+      if(this.acquistoEvento){
+        acquisti.push(this.acquistoEvento)
+      }
+      if(this.acquistoProdotto){
+        acquisti.push(this.acquistoProdotto)
+      }
+    }
+    this.dialogRef.close()
+    this.as.sbjObj.next(acquisti)
+  }
+
+  getIDService(){
     if(this.acquistoEvento){
-      acquisti.push(this.acquistoEvento)
+      return this.acquistoEvento.evento.id
     }
     if(this.acquistoProdotto){
-      acquisti.push(this.acquistoProdotto)
+      return this.acquistoProdotto.prodotto.id
     }
-    
-    this.as.sbjObj.next(acquisti)
+    return '';
   }
 
 }

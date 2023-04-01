@@ -1,7 +1,7 @@
 
 export class DetailAcquisto{
     title: string;
-    amount: number;
-    totale: number;
+    total: number;
+    price: number;
     qnt: number;
 }
