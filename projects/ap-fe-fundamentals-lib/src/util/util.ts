@@ -21,3 +21,15 @@ export function approximate(value : number, precision: number) : number {
     }
     
 }
+
+export function addHours(date:Date, hours:number) {
+    date.setHours(date.getHours() + hours);
+  
+    return date;
+}
+
+export function addMinutes(date:Date, minutes:number) {
+    date.setMinutes(date.getMinutes() + minutes);
+  
+    return date;
+}

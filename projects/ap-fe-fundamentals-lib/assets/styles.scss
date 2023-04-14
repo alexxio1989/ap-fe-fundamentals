@@ -29,7 +29,11 @@
 }
 
 .ngx-timepicker {
-    padding-left: 17px !important;
+    padding-left: 27px !important;
     padding-bottom: 10px !important;
     padding-top: 5px !important;
+}
+
+.ngx-timepicker__toggle{
+    margin-left: 15px;
 }

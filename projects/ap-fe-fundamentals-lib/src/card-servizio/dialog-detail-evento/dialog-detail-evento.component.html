@@ -19,7 +19,7 @@
             <p class="detail-intro">L'evento inizierà in data : {{evento.dataInizio | date:'medium'}}</p>
         </div>
         <div *ngIf="!evento.dataInizio" class="col-12 bg-white rounded d-flex justify-content-center p-2">
-            <app-calendar [(dateStart)]="acquistoEvento.dataInizio" ></app-calendar>
+            <app-calendar [minTime]="config.configurazione.oraApertura" [maxTime]="config.configurazione.oraChiusura" [disable]="false"  [(dateStart)]="acquistoEvento.dataInizio" ></app-calendar>
         </div>
     </div>
 

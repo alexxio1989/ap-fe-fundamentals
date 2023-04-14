@@ -23,6 +23,8 @@ export class ConfiguratoreService extends AbstractService<ConfigurazioneDto> imp
   private mockConfig() {
     this.configurazione = new ConfigurazioneDto();
     this.configurazione.localTax = 22;
+    this.configurazione.oraApertura = '08:15 am';
+    this.configurazione.oraChiusura = '19:30 am';
   }
 
   save(obj: ConfigurazioneDto): Observable<ConfigurazioneDto> {
