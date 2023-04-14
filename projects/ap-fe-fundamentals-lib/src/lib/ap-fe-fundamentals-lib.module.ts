@@ -16,12 +16,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { TextEditorComponent } from '../text-editor/text-editor.component';
 import { CardServizioComponent } from '../card-servizio/card-servizio.component';
 import { IncrementerComponent } from '../incrementer/incrementer.component';
-import { DialogDetailComponent } from '../card-servizio/dialog-detail/dialog-detail.component';
+import { DialogDetailProdottoComponent } from '../card-servizio/dialog-detail-prodotto/dialog-detail-prodotto.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaypalButtonComponent } from '../paypal-button/paypal-button.component';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { CartComponent } from '../cart/cart.component';
 import {MatBadgeModule} from '@angular/material/badge';
+import { DialogDetailEventoComponent } from '../card-servizio/dialog-detail-evento/dialog-detail-evento.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCardModule} from '@angular/material/card';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 @NgModule({
@@ -30,7 +34,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     TextEditorComponent,
     CardServizioComponent,
     IncrementerComponent,
-    DialogDetailComponent,
+    DialogDetailProdottoComponent,
+    DialogDetailEventoComponent,
     PaypalButtonComponent,
     CartComponent
   ],
@@ -50,14 +55,17 @@ import {MatBadgeModule} from '@angular/material/badge';
     AngularEditorModule,
     BrowserAnimationsModule,
     NgxPayPalModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatDatepickerModule,
+    MatCardModule,
+    MatNativeDateModule
   ],
   exports: [
     ImagesEditorComponent,
     TextEditorComponent,
     CardServizioComponent,
     IncrementerComponent,
-    DialogDetailComponent,
+    DialogDetailProdottoComponent,
     PaypalButtonComponent,
     CartComponent
   ]

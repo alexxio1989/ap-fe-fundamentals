@@ -1,7 +1,12 @@
 
 <div class="row mb-3 p-4">
-    <div class="col-12 d-flex justify-content-center">
-        <app-card-servizio [prodotto]="prodottoDto"></app-card-servizio>
+    <div class="col-12d-flex  justify-content-center">
+        <div class="col-12  col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+            <app-card-servizio [prodotto]="prodottoDto"></app-card-servizio>
+        </div>
+        <div class="col-12  col-sm-4 col-md-4 col-lg-4 col-xl-4 ">
+            <app-card-servizio [evento]="eventoDto"></app-card-servizio>
+        </div>
     </div>
     <div class="col-12 d-flex justify-content-center">
             <app-cart></app-cart>

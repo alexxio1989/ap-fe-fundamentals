@@ -1,36 +1,45 @@
-
-
-<div class="card shadow">
-  <div class="image-container">
-    <div *ngIf="servizio.images && servizio.images.length > 0" id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div *ngFor="let img of servizio.images ; let i = index" class="carousel-item {{i === 0 ? 'active' : ''}}">
-          <img [src]="img.base64" class="img-fluid rounded thumbnail-image" alt="...">
+<div class="card mb-3 shadow-sm" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-5 border-end">
+      <div *ngIf="servizio.images && servizio.images.length > 0" id="carouselExampleControls" class="carousel slide"
+        data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div *ngFor="let img of servizio.images ; let i = index" class="carousel-item {{i === 0 ? 'active' : ''}}">
+            <img [src]="img.base64" class="img-fluid rounded-start thumbnail-image" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <img *ngIf="!servizio.images || servizio.images.length === 0" [src]="defaultImg"
+        class="img-fluid rounded-start thumbnail-image" alt="...">
+    </div>
+    <div class="col-7">
+      <div style="width: fit-content;" class="position-absolute border-start border-bottom price top-0 end-0 bg-warning py-1 px-3">
+        <span class="price-card">{{servizio.prezzo | currency:'EUR'}}</span>
+      </div>
+      <div class="card-header card-title pt-3 bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="title-card mb-0">{{servizio.nome}}</h5>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-    <img  *ngIf="!servizio.images || servizio.images.length === 0" [src]="defaultImg" class="img-fluid rounded thumbnail-image" alt="...">
+      <div class="card-body py-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="sub-title-card " [innerHTML]="servizio.nomeExt"></div>
+        </div>
+      </div>
 
-  </div>
-  <div class="product-detail-container p-2">
-      <div class="d-flex justify-content-between align-items-center">
-          <h5 class="title-card">{{servizio.nome}}</h5>
-          <div class="d-flex flex-column mb-2"> <span class="price-card">{{servizio.prezzo | currency:'EUR'}}</span> </div>
-      </div>
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="sub-title-card " [innerHTML]="servizio.nomeExt"></div>
+      <button mat-button color="primary" (click)="openDetail()" class="buy position-absolute bottom-0 end-0">DETTAGLIO</button>
+
     </div>
-     
-      <div class="d-flex justify-content-end">
-        <button mat-button color="primary" (click)="openDetail()" class="buy mat-button-sm">DETTAGLIO</button>
-      </div>
   </div>
 </div>
+

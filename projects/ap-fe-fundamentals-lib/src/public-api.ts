@@ -8,9 +8,10 @@ export * from './images-editor/images-editor.component';
 export * from './text-editor/text-editor.component';
 export * from './card-servizio/card-servizio.component';
 export * from './incrementer/incrementer.component';
-export * from './card-servizio/dialog-detail/dialog-detail.component'
-export * from './paypal-button/paypal-button.component'
-export * from './cart/cart.component'
+export * from './card-servizio/dialog-detail-prodotto/dialog-detail-prodotto.component';
+export * from './card-servizio/dialog-detail-evento/dialog-detail-evento.component';
+export * from './paypal-button/paypal-button.component';
+export * from './cart/cart.component';
 export * from './service/utente.service';
 export * from './service/delegate.service';
 export * from './service/servizio.service';

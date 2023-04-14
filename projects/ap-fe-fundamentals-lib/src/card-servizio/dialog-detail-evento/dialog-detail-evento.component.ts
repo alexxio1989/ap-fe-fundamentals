@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { EventoDto } from '../../dto/eventoDto';
-import { ProdottoDto } from '../../dto/prodottoDto';
 import { ServizioDto } from '../../dto/servizioDto';
 import { defaultImg } from '../../images-editor/default-img';
-import { AcquistoProdottoDto } from '../../dto/acquistoProdottoDto';
-import { AcquistoEventoDto} from '../../dto/acquistoEventoDto';
+import { AcquistoEventoDto } from '../../dto/acquistoEventoDto';
 import { ConfiguratoreService } from '../../service/configuratore.service';
 import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
 import { AcquistoService } from '../../service/acquisto.service';
@@ -21,18 +19,15 @@ const ACTIONS = {
 }
 
 @Component({
-  selector: 'app-dialog-detail',
-  templateUrl: './dialog-detail.component.html',
-  styleUrls: ['./dialog-detail.component.scss']
+  selector: 'app-dialog-evento-detail',
+  templateUrl: './dialog-detail-evento.component.html',
+  styleUrls: ['./dialog-detail-evento.component.scss']
 })
-export class DialogDetailComponent implements OnInit {
+export class DialogDetailEventoComponent implements OnInit {
 
-  prodotto: ProdottoDto;
   evento: EventoDto;
   servizio : ServizioDto;
   defaultImg = defaultImg.emptyImg
-
-  acquistoProdotto : AcquistoProdottoDto
 
   acquistoEvento : AcquistoEventoDto
 
@@ -44,48 +39,38 @@ export class DialogDetailComponent implements OnInit {
 
   actionString: string;
 
+  today:Date = new Date();
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<DialogDetailComponent>,
+              public dialogRef: MatDialogRef<DialogDetailEventoComponent>,
               public config:ConfiguratoreService,
               private as: AcquistoService) { }
 
   ngOnInit(): void {
     this.actionString = ACTIONS.detail;
-    if(this.data.prodotto){
-      this.prodotto = this.data.prodotto
-      this.servizio = this.prodotto
-      this.acquistoProdotto = new AcquistoProdottoDto();
-      this.acquistoProdotto.type = TypeAcquistoDto.ACQUISTO_PRODOTTO
-      this.acquistoProdotto.prodotto = this.prodotto
-      this.acquisti.push(this.acquistoProdotto)
-    }
-
     if(this.data.evento){
       this.evento = this.data.evento
       this.servizio = this.evento
       this.acquistoEvento = new AcquistoEventoDto();
-      this.acquistoProdotto.type = TypeAcquistoDto.ACQUISTO_EVENTO
-      this.acquistoEvento.evento = this.evento;
+      this.acquistoEvento.type = TypeAcquistoDto.ACQUISTO_EVENTO
+      this.acquistoEvento.evento = this.evento
+      this.acquistoEvento.dataInizio = this.evento.dataInizio
+      this.acquistoEvento.dataFine = this.evento.dataFine
       this.acquisti.push(this.acquistoEvento)
     }
   }
 
   retrieveQuantity(value : number){
-    if(this.acquistoProdotto){
-      this.acquistoProdotto.quantita = value;
-      this.totPrice = this.acquistoProdotto.quantita && this.acquistoProdotto.quantita > 0 ? ( this.config.countValue(this.prodotto.prezzo) ) * this.acquistoProdotto.quantita : 0
-      this.quantity = this.acquistoProdotto.quantita
-    }
-    if(this.acquistoEvento ){
+    if(this.acquistoEvento){
       this.acquistoEvento.quantita = value;
-      this.totPrice = this.acquistoEvento.quantita && this.acquistoEvento.quantita > 0 ? ( this.config.countValue(this.prodotto.prezzo) ) * this.acquistoEvento.quantita : 0
+      this.totPrice = this.acquistoEvento.quantita && this.acquistoEvento.quantita > 0 ? ( this.config.countValue(this.evento.prezzo) ) * this.acquistoEvento.quantita : 0
       this.quantity = this.acquistoEvento.quantita
     }
     
   }
 
   action(action: string){
-
+    this.as.sbjAction.next(action);
     this.actionString = action;
   }
 
@@ -95,19 +80,15 @@ export class DialogDetailComponent implements OnInit {
 
     if(acquisti && acquisti.length > 0){
       acquisti = acquisti.filter(a => this.as.getIDService(a) !== this.getIDService());
+      
       if(this.acquistoEvento){
         acquisti.push(this.acquistoEvento)
-      }
-      if(this.acquistoProdotto){
-        acquisti.push(this.acquistoProdotto)
       }
     } else {
       acquisti = []
+      
       if(this.acquistoEvento){
         acquisti.push(this.acquistoEvento)
-      }
-      if(this.acquistoProdotto){
-        acquisti.push(this.acquistoProdotto)
       }
     }
     this.dialogRef.close()
@@ -118,10 +99,16 @@ export class DialogDetailComponent implements OnInit {
     if(this.acquistoEvento){
       return this.acquistoEvento.evento.id
     }
-    if(this.acquistoProdotto){
-      return this.acquistoProdotto.prodotto.id
-    }
     return '';
+  }
+
+  onSelectDate(event : any){
+
+    if(this.evento.dataInizio){
+      return;
+    }
+
+    this.acquistoEvento.dataInizio = event;
   }
 
 }

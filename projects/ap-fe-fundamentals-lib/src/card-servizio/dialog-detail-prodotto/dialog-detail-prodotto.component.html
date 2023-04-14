@@ -46,31 +46,23 @@
 
         <button mat-button *ngIf="prodotto && (actionString === 'DETAIL') "
             cdkFocusInitial (click)="action('PRE-ACQUISTO')" color="primary">Procedi all' acquisto</button>
+            
+        <button mat-button *ngIf="totPrice > 0 && (actionString !== 'PAYPAL' && actionString !== 'DETAIL' )" cdkFocusInitial
+            (click)="action('PAYPAL')" class="ml-auto" color="primary">Acquista ora</button>
 
-        <button mat-button *ngIf="evento && (actionString === 'DETAIL')" cdkFocusInitial
-            (click)="action('PRE-PRENOTAZIONE')" color="primary">Procedi alla prenotazione</button>
-        
-        <button mat-button *ngIf="totPrice > 0 && (actionString !== 'ACQUISTO' && actionString !== 'DETAIL' )" cdkFocusInitial
-            (click)="action('ACQUISTO')" class="ml-auto" color="primary">Acquista ora</button>
-
-        <button mat-button *ngIf="totPrice > 0 && (actionString !== 'ACQUISTO' && actionString !== 'DETAIL' )" cdkFocusInitial
+        <button mat-button *ngIf="totPrice > 0 && (actionString !== 'PAYPAL' && actionString !== 'DETAIL' )" cdkFocusInitial
             (click)="addToCarrello()" class="ml-auto" color="primary">Aggiungi al carrello</button>
         
-        <button mat-button *ngIf="prodotto && actionString !== 'DETAIL' && actionString === 'ACQUISTO'" cdkFocusInitial
+        <button mat-button *ngIf="prodotto && actionString !== 'DETAIL' && actionString === 'PAYPAL'" cdkFocusInitial
                 (click)="action('PRE-ACQUISTO')" class="ml-auto" color="primary">Modifica acquisto</button>
 
-        <button mat-button *ngIf="evento && actionString !== 'DETAIL' && actionString === 'ACQUISTO'" cdkFocusInitial
-        (click)="action('PRE-PRENOTAZIONE')" class="ml-auto" color="primary">Modifica prenotazione</button>
     </div>
 
-    <div *ngIf=" (actionString === 'ACQUISTO') && totPrice > 0" class="col-12 mt-2 ">
+    <div *ngIf=" (actionString === 'PAYPAL') && totPrice > 0" class="col-12 mt-2 ">
         <div class="col-12 p-3 bg-light d-flex justify-content-center lign-items-center">
             <p class="detail-intro align-self-center mb-0">Importo totale ( Iva inclusa ) :  {{totPrice| currency:'EUR'}}</p>
         </div>
     </div>
 
-    <div *ngIf=" (actionString === 'ACQUISTO') && totPrice > 0" class="col-12 mt-4">
-        <app-paypal-button [acquisti]="acquisti"></app-paypal-button>
-
-    </div>
+    <app-paypal-button [acquisti]="acquisti"></app-paypal-button>
 </div>

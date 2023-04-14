@@ -8,9 +8,9 @@
 
 
 $base-font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-$base-color: #313131 !important;
+$base-color: #525252 !important;
 
-$second-color: #6d6d6d !important;
+$second-color: #858585 !important;
 
 h1{
   font-size: 1.8rem !important;
@@ -50,7 +50,7 @@ p{
 }
 
 .sub-title-card {
-    font-size: smaller !important;
+    font-size: 12px !important;
     font-family: $base-font;
     color:$second-color;
 }
@@ -58,5 +58,5 @@ p{
 .price-card {
     font-size: 13px;
     font-weight: bold;
-    color: rgb(163, 162, 162)
+    color:$base-color;
 }

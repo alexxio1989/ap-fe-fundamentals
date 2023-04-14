@@ -9,7 +9,8 @@ import { UtenteService } from '../service/utente.service';
 import { Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DelegateService } from '../service/delegate.service';
-import { DialogDetailComponent } from './dialog-detail/dialog-detail.component';
+import { DialogDetailProdottoComponent } from './dialog-detail-prodotto/dialog-detail-prodotto.component';
+import { DialogDetailEventoComponent } from '../public-api';
 
 @Component({
   selector: 'app-card-servizio',
@@ -26,7 +27,7 @@ export class CardServizioComponent implements OnInit {
   defaultImg = defaultImg.emptyImg
 
   constructor(private route: Router,
-    private user_service:UtenteService , 
+              private user_service:UtenteService , 
               private servizio_service:ServizioService ,
               private ds: DelegateService,
               @Inject('environment') private environment : any,
@@ -38,33 +39,61 @@ export class CardServizioComponent implements OnInit {
     } else {
       this.servizio = this.evento;
     }
-
-    if(!this.servizio.images || this.servizio.images.length === 0){
-      
-    }
   }
 
   openDetail(){
 
     if (this.ds.isMobile) {
-      this.dialog.open(DialogDetailComponent, {
-        height: 'auto',
-        width: '95%',
-        maxWidth: '95vw',
-        data: {
-          prodotto: this.prodotto,
-          evento: this.evento
-        }
-      });
+
+      if(this.prodotto){
+
+        this.dialog.open(DialogDetailProdottoComponent, {
+          height: 'auto',
+          width: '95%',
+          maxWidth: '95vw',
+          data: {
+            prodotto: this.prodotto
+          }
+        });
+
+      } else if(this.evento){
+
+        this.dialog.open(DialogDetailEventoComponent, {
+          height: 'auto',
+          width: '95%',
+          maxWidth: '95vw',
+          data: {
+            prodotto: this.prodotto
+          }
+        });
+
+      }
+
     } else {
-      this.dialog.open(DialogDetailComponent, {
-        height: 'auto',
-        width: '40%',
-        data: {
-          prodotto: this.prodotto,
-          evento: this.evento
-        }
-      });
+
+
+      if(this.prodotto){
+
+        this.dialog.open(DialogDetailProdottoComponent, {
+          height: 'auto',
+          width: '40%',
+          data: {
+            prodotto: this.prodotto
+          }
+        });
+
+      } else if(this.evento){
+
+        this.dialog.open(DialogDetailEventoComponent, {
+          height: 'auto',
+          width: '40%',
+          data: {
+            evento: this.evento
+          }
+        });
+        
+      }
+      
     }
   }
 

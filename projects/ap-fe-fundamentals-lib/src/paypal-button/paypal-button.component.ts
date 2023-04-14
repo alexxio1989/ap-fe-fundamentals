@@ -4,11 +4,12 @@ import {
   IPayPalConfig,
   ICreateOrderRequest 
 } from 'ngx-paypal';
-import { AcquistoDto } from '../dto/acquistoDto';
 import { ITransactionItem } from 'ngx-paypal';
 import { TypeAcquistoDto } from '../dto/typeAcquistoDto';
 import { ConfiguratoreService } from '../service/configuratore.service';
-import { getCurrencyString ,approximate } from '../util/util';
+import { AcquistoService } from '../service/acquisto.service';
+import { ItemCategory } from 'ngx-paypal'
+import { Actions } from '../constants/actions';
 
 @Component({
   selector: 'app-paypal-button',
@@ -16,22 +17,24 @@ import { getCurrencyString ,approximate } from '../util/util';
   styleUrls: ['./paypal-button.component.scss'],
 })
 export class PaypalButtonComponent implements OnInit {
-  @Input() tax: number;
 
+  show:boolean;
   @Input() acquisti: any[];
-
   public payPalConfig?: IPayPalConfig;
-
-  amount: string;
 
   constructor(
     @Inject('environment') private environment : any,
-    public config:ConfiguratoreService
+    public config:ConfiguratoreService,
+    private as: AcquistoService
   ) {
   }
 
   ngOnInit(): void {
+    this.as.sbjAction.asObservable().subscribe(next =>{
+      this.show = next === Actions.PAYPAL ? true : false; 
+    })
     this.initConfig();
+    
   }
 
   private initConfig(): void {
@@ -68,35 +71,33 @@ export class PaypalButtonComponent implements OnInit {
       onApprove: (data, actions) => {
         console.log(
           'onApprove - transaction was approved, but not authorized',
-          data,
+          JSON.stringify(data),
           actions
         );
         actions.order.get().then((details: any) => {
           console.log(
             'onApprove - you can get full order details inside onApprove: ',
-            details
+            JSON.stringify(details)
           );
         });
       },
       onClientAuthorization: (data) => {
         console.log(
           'onClientAuthorization - you should probably inform your server about completed transaction at this point',
-          data
+          JSON.stringify(data)
         );
       },
       onCancel: (data, actions) => {
-        console.log('OnCancel', data, actions);
+        console.log('OnCancel', JSON.stringify(data), actions);
       },
       onError: (err) => {
         console.log('OnError', err);
       },
       onClick: (data, actions) => {
-        console.log('onClick', data, actions);
+        console.log('onClick', JSON.stringify(data), actions);
       },
     };
   }
-
-  
 
   getItems(acquisti: any[]): ITransactionItem[] {
     let items: ITransactionItem[] = [];
@@ -111,58 +112,22 @@ export class PaypalButtonComponent implements OnInit {
   mapItem(acquisto: any): ITransactionItem {
     let item : ITransactionItem;
     item = {
-      name: this.getTitleAcquisto(acquisto),
-      quantity: '' + this.getQuantity(acquisto),
-      category: 'DIGITAL_GOODS',
+      name: this.as.getDetail(acquisto).title,
+      quantity: '' + acquisto.quantita,
+      category: "DIGITAL_GOODS",
       unit_amount: {
         currency_code: 'EUR',
-        value: ''+this.getAmountItem(acquisto),
+        value: '' + this.as.getDetail(acquisto).price,
       },
     };
     console.log(JSON.stringify(item.unit_amount.value))
     return item;
   }
 
-  getTitleAcquisto(acquisto: any): string {
-    if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
-      return acquisto.prodotto.nome;
-    } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
-      return acquisto.evento.nome;
-    }
-    return '';
-  }
-
-  getCategoryAcquisto(acquisto: any): string {
-    if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
-      return acquisto.prodotto.nome;
-    } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
-      return acquisto.evento.nome;
-    }
-    return '';
-  }
-
-  getQuantity(acquisto: AcquistoDto): number {
-    return acquisto.quantita;
-  }
-
-  getAmountItem(acquisto: any): number {
-    let value = 0
-    if (acquisto.type === TypeAcquistoDto.ACQUISTO_PRODOTTO) {
-      value = this.config.countValue(acquisto.prodotto.prezzo);
-      value = approximate(value, 100)
-    } else if (acquisto.type === TypeAcquistoDto.ACQUISTO_EVENTO) {
-      value = this.config.countValue(acquisto.evento.prezzo)
-      value = approximate(value, 100)
-    }
-    return value;
-  }
-
-
-
   private getTotalItemsValue() : number {
     let total = 0;
     this.acquisti.forEach(acquisto => {
-      total = total + (this.getAmountItem(acquisto) * acquisto.quantita)
+      total = total + (this.as.getDetail(acquisto).price * acquisto.quantita)
     });
     return total;
   }
