@@ -23,3 +23,13 @@
 .mat-dialog-container {
     max-height: 600px !important;
 }
+
+.timepicker-overlay {
+    z-index: 9999 !important;
+}
+
+.ngx-timepicker {
+    padding-left: 17px !important;
+    padding-bottom: 10px !important;
+    padding-top: 5px !important;
+}

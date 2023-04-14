@@ -63,7 +63,7 @@ export class CardServizioComponent implements OnInit {
           width: '95%',
           maxWidth: '95vw',
           data: {
-            prodotto: this.prodotto
+            evento: this.evento
           }
         });
 

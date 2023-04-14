@@ -26,6 +26,8 @@ import { DialogDetailEventoComponent } from '../card-servizio/dialog-detail-even
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     DialogDetailProdottoComponent,
     DialogDetailEventoComponent,
     PaypalButtonComponent,
-    CartComponent
+    CartComponent,
+    CalendarComponent
   ],
   imports: [
     HttpClientModule,
@@ -58,7 +61,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatBadgeModule,
     MatDatepickerModule,
     MatCardModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgxMaterialTimepickerModule
   ],
   exports: [
     ImagesEditorComponent,

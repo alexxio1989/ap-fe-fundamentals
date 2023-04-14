@@ -39,8 +39,6 @@ export class DialogDetailEventoComponent implements OnInit {
 
   actionString: string;
 
-  today:Date = new Date();
-
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<DialogDetailEventoComponent>,
               public config:ConfiguratoreService,
@@ -102,13 +100,6 @@ export class DialogDetailEventoComponent implements OnInit {
     return '';
   }
 
-  onSelectDate(event : any){
-
-    if(this.evento.dataInizio){
-      return;
-    }
-
-    this.acquistoEvento.dataInizio = event;
-  }
+  
 
 }
