@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ImageDto } from '../dto/imageDto';
-import { EditableImg } from '../dto/editableImg';
+import { ImageDto } from '../../dto/imageDto';
+import { EditableImg } from '../../dto/editableImg';
 import { base64ToFile, Dimensions, ImageCroppedEvent, ImageTransform, LoadedImage } from 'ngx-image-cropper';
 import { defaultImg } from './default-img';
 

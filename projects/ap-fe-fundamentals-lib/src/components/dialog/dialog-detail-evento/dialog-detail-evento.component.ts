@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
-import { EventoDto } from '../../dto/eventoDto';
-import { ServizioDto } from '../../dto/servizioDto';
+import { EventoDto } from '../../../dto/eventoDto';
+import { ServizioDto } from '../../../dto/servizioDto';
 import { defaultImg } from '../../images-editor/default-img';
-import { AcquistoEventoDto } from '../../dto/acquistoEventoDto';
-import { ConfiguratoreService } from '../../service/configuratore.service';
-import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
-import { AcquistoService } from '../../service/acquisto.service';
-import { AcquistoDto } from '../../dto/acquistoDto';
-import { Constants } from '../../constants/constants';
+import { AcquistoEventoDto } from '../../../dto/acquistoEventoDto';
+import { ConfiguratoreService } from '../../../service/configuratore.service';
+import { UtenteService } from '../../../service/utente.service';
+import { TypeAcquistoDto } from '../../../dto/typeAcquistoDto';
+import { AcquistoService } from '../../../service/acquisto.service';
+import { AcquistoDto } from '../../../dto/acquistoDto';
+import { Constants } from '../../../constants/constants';
+import { Actions } from '../../../constants/actions';
+import { DelegateService } from '../../../service/delegate.service';
+import { MessageResponse } from '../../../dto/messageResponse';
+
 
 const ACTIONS = {
   detail: 'DETAIL',
@@ -42,7 +47,10 @@ export class DialogDetailEventoComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<DialogDetailEventoComponent>,
               public config:ConfiguratoreService,
-              private as: AcquistoService) { }
+              private as: AcquistoService,
+              public ds: DelegateService,
+              public us: UtenteService ,
+              public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.actionString = ACTIONS.detail;
@@ -68,6 +76,33 @@ export class DialogDetailEventoComponent implements OnInit {
   }
 
   action(action: string){
+    if(Actions.PRENOTA_ORA === action){
+      if(this.servizio.prezzo > 0){
+        action = Actions.PAYPAL
+      } else {
+        this.as.save(this.acquisti).subscribe(next => {
+          let message = new MessageResponse;
+          message.title = 'Acquisto avvenuto con successo'
+          message.description = 'Controlla la tua email per maggiori informazioni'
+          this.dialog.open(DialogDetailEventoComponent, {
+            height: 'auto',
+            width: 'auto',
+            data: {
+              message: message
+            }
+          });
+          this.dialogRef.close()
+        }, error => {
+          this.ds.sbjSpinner.next(false);
+          if(401 === error.status){
+            this.us.sbjUtente.next(undefined)
+          }
+          this.ds.sbjErrorsNotification.next(error.error + " , Codice Errore " + error.status);
+        })
+      }
+
+    } 
+
     this.as.sbjAction.next(action);
     this.actionString = action;
   }

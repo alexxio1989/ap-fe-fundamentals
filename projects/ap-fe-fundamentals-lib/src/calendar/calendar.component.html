@@ -1,6 +1,0 @@
-<mat-card class="demo-inline-calendar-card pt-0">
-    <mat-calendar [minDate]="today" [selected]="editedStartDate" (selectedChange)="onSelectDate($event)"></mat-calendar>
-    <div class="ngx-timepicker-field-example" *ngIf="editedStartDate">
-        <ngx-timepicker-field [format]="24" [min]="minTime" [max]="maxTime" (timeChanged)="timeChange($event)"  [defaultTime]="'11:11 am'"></ngx-timepicker-field>
-    </div>
-</mat-card>

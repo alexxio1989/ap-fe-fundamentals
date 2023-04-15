@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Constants } from '../constants/constants';
-import { EventoDto } from '../dto/eventoDto';
-import { ProdottoDto } from '../dto/prodottoDto';
+import { Constants } from '../../constants/constants';
+import { EventoDto } from '../../dto/eventoDto';
+import { ProdottoDto } from '../../dto/prodottoDto';
 import { defaultImg } from '../images-editor/default-img';
-import { ServizioService } from '../service/servizio.service';
-import { UtenteService } from '../service/utente.service';
+import { ServizioService } from '../../service/servizio.service';
+import { UtenteService } from '../../service/utente.service';
 import { Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DelegateService } from '../service/delegate.service';
-import { DialogDetailProdottoComponent } from './dialog-detail-prodotto/dialog-detail-prodotto.component';
-import { DialogDetailEventoComponent } from '../public-api';
+import { DelegateService } from '../../service/delegate.service';
+import { DialogDetailProdottoComponent } from '../dialog/dialog-detail-prodotto/dialog-detail-prodotto.component';
+import { DialogDetailEventoComponent } from '../../public-api';
 
 @Component({
   selector: 'app-card-servizio',

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { DelegateService } from '../service/delegate.service';
+import { DelegateService } from '../../service/delegate.service';
 
 @Component({
   selector: 'app-text-editor',

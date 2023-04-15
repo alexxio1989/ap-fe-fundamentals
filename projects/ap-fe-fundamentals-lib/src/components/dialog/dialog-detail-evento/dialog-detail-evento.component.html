@@ -21,10 +21,13 @@
         <div *ngIf="!evento.dataInizio" class="col-12 bg-white rounded d-flex justify-content-center p-2">
             <app-calendar [minTime]="config.configurazione.oraApertura" [maxTime]="config.configurazione.oraChiusura" [disable]="false"  [(dateStart)]="acquistoEvento.dataInizio" ></app-calendar>
         </div>
+        <div *ngIf="acquistoEvento.dataInizio" class="col-12 bg-white rounded d-flex justify-content-center p-2">
+            <p class="detail-intro">{{acquistoEvento.dataInizio | date:'medium'}}</p>        
+        </div>
     </div>
 
 </div>
-<div mat-dialog-actions class="row">
+<div mat-dialog-actions class="row py-0">
     <div class="col-12 d-flex justify-content-end">
         <button mat-button *ngIf="actionString !== 'DETAIL'" (click)="action('DETAIL')" color="accent">Torna al
             dettaglio</button>
@@ -32,10 +35,10 @@
         <button mat-button *ngIf="evento && (actionString === 'DETAIL') "
             cdkFocusInitial (click)="action('PRE-PRENOTAZIONE')" color="primary">Procedi alla prenotazione</button>
             
-        <button mat-button *ngIf="acquistoEvento.dataInizio && actionString !== 'DETAIL' " cdkFocusInitial
-            (click)="action('PAYPAL')" class="ml-auto" color="primary">Prenota ora</button>
+        <button mat-button *ngIf="acquistoEvento.dataInizio && actionString !== 'PAYPAL' && actionString !== 'DETAIL' " cdkFocusInitial
+            (click)="action('PRENOTA_ORA')" class="ml-auto" color="primary">Prenota ora</button>
 
-        <button mat-button *ngIf="acquistoEvento.dataInizio && actionString !== 'DETAIL' " cdkFocusInitial
+        <button mat-button *ngIf="acquistoEvento.dataInizio && actionString !== 'PAYPAL' &&  actionString !== 'DETAIL' " cdkFocusInitial
             (click)="addToCarrello()" class="ml-auto" color="primary">Aggiungi al carrello</button>
         
         <button mat-button *ngIf="evento && actionString !== 'DETAIL' && actionString === 'PAYPAL'" cdkFocusInitial

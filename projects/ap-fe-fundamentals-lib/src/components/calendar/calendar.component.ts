@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { addHours,addMinutes } from '../util/util';
+import { addHours,addMinutes } from '../../util/util';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -21,10 +21,29 @@ export class CalendarComponent implements OnInit {
 
   today:Date = new Date();
 
+  default: string;
+
   constructor() { }
 
   ngOnInit(): void {
     this.editedStartDate = this.dateStart
+
+    if(this.dateStart){
+      let time = '';
+      let hour = this.dateStart.getHours();
+      let minutes = this.dateStart.getMinutes();
+      if(hour && hour > 12){
+        time = ' pm'
+      } else {
+        time = ' am';
+      }
+      this.default = hour + ':' + minutes + time
+    } else if(this.minTime){
+      this.default = this.minTime;
+    } else {
+      this.default = '11:11 am'
+    }
+
   }
 
   onSelectDate(event : any){

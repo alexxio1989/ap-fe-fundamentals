@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AcquistoService } from '../service/acquisto.service';
-import { AcquistoLight } from '../dto/acquisto-light';
-import { Constants } from '../constants/constants';
+import { AcquistoService } from '../../service/acquisto.service';
+import { AcquistoLight } from '../../dto/acquisto-light';
+import { Constants } from '../../constants/constants';
 
 
 @Component({

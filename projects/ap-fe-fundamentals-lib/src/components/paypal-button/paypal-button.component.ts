@@ -5,11 +5,11 @@ import {
   ICreateOrderRequest 
 } from 'ngx-paypal';
 import { ITransactionItem } from 'ngx-paypal';
-import { TypeAcquistoDto } from '../dto/typeAcquistoDto';
-import { ConfiguratoreService } from '../service/configuratore.service';
-import { AcquistoService } from '../service/acquisto.service';
+import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
+import { ConfiguratoreService } from '../../service/configuratore.service';
+import { AcquistoService } from '../../service/acquisto.service';
 import { ItemCategory } from 'ngx-paypal'
-import { Actions } from '../constants/actions';
+import { Actions } from '../../constants/actions';
 
 @Component({
   selector: 'app-paypal-button',

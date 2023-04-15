@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
-import { ProdottoDto } from '../../dto/prodottoDto';
-import { ServizioDto } from '../../dto/servizioDto';
+import { ProdottoDto } from '../../../dto/prodottoDto';
+import { ServizioDto } from '../../../dto/servizioDto';
 import { defaultImg } from '../../images-editor/default-img';
-import { AcquistoProdottoDto } from '../../dto/acquistoProdottoDto';
-import { ConfiguratoreService } from '../../service/configuratore.service';
-import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
-import { AcquistoService } from '../../service/acquisto.service';
-import { AcquistoDto } from '../../dto/acquistoDto';
-import { Constants } from '../../constants/constants';
+import { AcquistoProdottoDto } from '../../../dto/acquistoProdottoDto';
+import { ConfiguratoreService } from '../../../service/configuratore.service';
+import { TypeAcquistoDto } from '../../../dto/typeAcquistoDto';
+import { AcquistoService } from '../../../service/acquisto.service';
+import { AcquistoDto } from '../../../dto/acquistoDto';
+import { Constants } from '../../../constants/constants';
 
 const ACTIONS = {
   detail: 'DETAIL',
