@@ -14,6 +14,8 @@ import { Constants } from '../../../constants/constants';
 import { Actions } from '../../../constants/actions';
 import { DelegateService } from '../../../service/delegate.service';
 import { MessageResponse } from '../../../dto/messageResponse';
+import { DialogResponseComponent } from '../dialog-response/dialog-response.component';
+import { handleServiceError } from 'projects/ap-fe-fundamentals-lib/src/util/service-util';
 
 
 const ACTIONS = {
@@ -84,7 +86,8 @@ export class DialogDetailEventoComponent implements OnInit {
           let message = new MessageResponse;
           message.title = 'Acquisto avvenuto con successo'
           message.description = 'Controlla la tua email per maggiori informazioni'
-          this.dialog.open(DialogDetailEventoComponent, {
+          message.path = '';
+          this.dialog.open(DialogResponseComponent, {
             height: 'auto',
             width: 'auto',
             data: {
@@ -93,11 +96,7 @@ export class DialogDetailEventoComponent implements OnInit {
           });
           this.dialogRef.close()
         }, error => {
-          this.ds.sbjSpinner.next(false);
-          if(401 === error.status){
-            this.us.sbjUtente.next(undefined)
-          }
-          this.ds.sbjErrorsNotification.next(error.error + " , Codice Errore " + error.status);
+          handleServiceError(error,this.us,this.ds);
         })
       }
 

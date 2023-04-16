@@ -5,11 +5,15 @@ import {
   ICreateOrderRequest 
 } from 'ngx-paypal';
 import { ITransactionItem } from 'ngx-paypal';
-import { TypeAcquistoDto } from '../../dto/typeAcquistoDto';
+import { UtenteService } from '../../service/utente.service';
 import { ConfiguratoreService } from '../../service/configuratore.service';
 import { AcquistoService } from '../../service/acquisto.service';
-import { ItemCategory } from 'ngx-paypal'
+import { DelegateService } from '../../service/delegate.service';
+import { MessageResponse } from '../../dto/messageResponse';
 import { Actions } from '../../constants/actions';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogResponseComponent } from '../../components/dialog/dialog-response/dialog-response.component';
+import { handleServiceError } from '../../util/service-util';
 
 @Component({
   selector: 'app-paypal-button',
@@ -25,7 +29,10 @@ export class PaypalButtonComponent implements OnInit {
   constructor(
     @Inject('environment') private environment : any,
     public config:ConfiguratoreService,
-    private as: AcquistoService
+    private as: AcquistoService,
+    public ds: DelegateService,
+    public us: UtenteService,
+    public dialog: MatDialog
   ) {
   }
 
@@ -75,10 +82,15 @@ export class PaypalButtonComponent implements OnInit {
           actions
         );
         actions.order.get().then((details: any) => {
+
+          this.saveAcquisti();
+
+        
           console.log(
             'onApprove - you can get full order details inside onApprove: ',
             JSON.stringify(details)
           );
+
         });
       },
       onClientAuthorization: (data) => {
@@ -98,6 +110,26 @@ export class PaypalButtonComponent implements OnInit {
       },
     };
   }
+
+  private saveAcquisti() {
+    this.as.save(this.acquisti).subscribe(next => {
+      let message = new MessageResponse;
+      message.title = 'Acquisto avvenuto con successo';
+      message.description = 'Controlla la tua email per maggiori informazioni';
+      message.path = '';
+      this.dialog.open(DialogResponseComponent, {
+        height: 'auto',
+        width: 'auto',
+        data: {
+          message: message
+        }
+      });
+    }, error => {
+      handleServiceError(error,this.us,this.ds);
+    });
+  }
+
+  
 
   getItems(acquisti: any[]): ITransactionItem[] {
     let items: ITransactionItem[] = [];
